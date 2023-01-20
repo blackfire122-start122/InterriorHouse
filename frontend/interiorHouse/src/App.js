@@ -4,7 +4,7 @@ import Header from './components/Header'
 import HouseList from './components/HouseList'
 
 import axios from 'axios';
-// import './App.css';
+import './styles/App.css';
 
 function App() {
   const [houses,setHouses] = useState([])

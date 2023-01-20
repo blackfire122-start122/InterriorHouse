@@ -17,5 +17,5 @@ func HandleRequests(){
 	// http.HandleFunc("/ws/chat",ws_chat)
 
 	// http.Handle("/static/",http.StripPrefix("/static/", http.FileServer(http.Dir("../../ui_old_files/static"))))
-	// http.Handle("/media/",http.StripPrefix("/media/", http.FileServer(http.Dir("../../ui_old_files/media"))))
+	http.Handle("/media/",http.StripPrefix("/media/", http.FileServer(http.Dir("media"))))
 }

@@ -1,11 +1,12 @@
-import React from 'react';
+import React from 'react'
+import '../styles/HouseItem.css'
 
 const Header = function ({house}) {
 	console.log(house)
 	return(
 		<div className="house">
-			<h1>{house.Name}</h1>		
 			<img className="imgHouse" src={house.Image} alt={house.Name+" image"}/>
+			<h1 className="houseName">{house.Name}</h1>		
 		</div>
 	)
 }
