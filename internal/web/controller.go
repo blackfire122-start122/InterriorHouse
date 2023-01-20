@@ -11,25 +11,24 @@ import (
 func Elements(w http.ResponseWriter, r *http.Request){
 	var elements []Element
 	var err = DB.Find(&elements).Error
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 	
-
-	resp := make([]map[string]string, len(elements))
-
 	if err != nil{
 		fmt.Println("error db")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	
+	resp := make([]map[string]string, len(elements))
+
 	for i, el := range elements {
 		item := make(map[string]string)
-		item["id"] = strconv.FormatUint(el.Id,10)
-		item["name"] = el.Name
-		item["file"] = el.File
-		item["type"] = el.Type.Name
+		item["Id"] = strconv.FormatUint(el.Id,10)
+		item["Name"] = el.Name
+		item["File"] = el.File
+		// item["type"] = el.Type.Name
 		resp[i] = item
 	}
 
@@ -37,6 +36,36 @@ func Elements(w http.ResponseWriter, r *http.Request){
 	fmt.Println(string(jsonResp))
 	w.Write(jsonResp)
 }
+
+func Houses(w http.ResponseWriter, r *http.Request){
+	var houses []House
+	var err = DB.Find(&houses).Error
+	
+	if err != nil{
+		fmt.Println("error db")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	
+	resp := make([]map[string]string, len(houses))
+
+	for i, el := range houses {
+		item := make(map[string]string)
+		item["Id"] = strconv.FormatUint(el.Id,10)
+		item["Name"] = el.Name
+		item["Image"] = el.Image
+		resp[i] = item
+	}
+
+	jsonResp, _ := json.Marshal(resp)
+	fmt.Println(string(jsonResp))
+	w.Write(jsonResp)
+}
+
+
 
 // func SignPage(w http.ResponseWriter, r *http.Request){
 // 	tmpl, err := template.ParseFiles("../../ui_old_files/templates/sigin.html")

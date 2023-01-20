@@ -1,29 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Header from './components/Header'
-import House from './components/House'
+import HouseList from './components/HouseList'
 
+import axios from 'axios';
 // import './App.css';
-// import axios from 'axios';
-
-// async function testPoint() {
-  // const response = await axios.get("http://localhost:8080/api");
-  // console.log(response.data)
-// }
 
 function App() {
-  // testPoint()
+  const [houses,setHouses] = useState([])
+
+  async function fetchHouse() {
+    const response = await axios.get("http://localhost:8080/api/v1/houses")
+    setHouses(response.data)
+  }
+
+  useEffect(() => {
+    fetchHouse()
+  }, [])
+
   return (
     <div className="App">
       <Header/>
-
-      <div>
-        <House />
-        <House />
-        <House />
-        <House />
-      </div>
-
+      <HouseList houses={houses} />
     </div>
   );
 }

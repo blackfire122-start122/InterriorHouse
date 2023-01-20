@@ -5,8 +5,8 @@ import (
 )
 
 func HandleRequests(){
-	http.HandleFunc("/api/elements",Elements)
-	// http.HandleFunc("/user",UserPage)
+	http.HandleFunc("/api/v1/elements",Elements)
+	http.HandleFunc("/api/v1/houses",Houses)
 	// http.HandleFunc("/sign",SignPage)
 	// http.HandleFunc("/login",LoginPage)
 

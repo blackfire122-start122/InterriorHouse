@@ -37,13 +37,20 @@ type TypeElement struct {
 	Name string
 }
 
+type House struct {
+	gorm.Model
+	Id uint64 `gorm:"primaryKey"`
+	Name string
+	Image string
+}
+
 func init() {
-    db, err := gorm.Open(sqlite.Open("../../database.db"), &gorm.Config{})
+    db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
     DB = db
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{})
+	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{}, &House{})
 }
