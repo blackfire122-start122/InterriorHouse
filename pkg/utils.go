@@ -10,18 +10,23 @@ import (
 
 var store = sessions.NewCookieStore([]byte(os.Getenv("SECRET_KEY")))
 
-func Login(w http.ResponseWriter, r *http.Request) bool{
+type UserLogin struct {
+    Username string
+    Password string
+}
+
+func Login(w http.ResponseWriter, r *http.Request, userLogin *UserLogin) bool{
 	session, _ := store.Get(r, "session-name")
 
 	var user User
-	err := DB.First(&user, "Username = ?", r.FormValue("username")).Error
+	err := DB.First(&user, "Username = ?", userLogin.Username).Error
 
 	if err != nil{
 		fmt.Println("error db")
 		return false
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(r.FormValue("password")))
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userLogin.Password))
 	if err==nil{
 		session.Values["username"] = user.Username
 		session.Values["password"] = user.Password
@@ -35,7 +40,25 @@ func Login(w http.ResponseWriter, r *http.Request) bool{
 	return true
 }
 
-func CheckSesionUser (w http.ResponseWriter, r *http.Request) (bool, User){
+type UserRegister struct {
+    Username string
+    Password1 string
+    Password2 string
+    Email string
+}
+
+func Sign(user *UserRegister) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password1), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	DB.Create(&User{Username: user.Username, Password: string(hashedPassword), Email: user.Email})
+	return err
+}
+
+func CheckSesionUser (r *http.Request) (bool, User){
 	session, _ := store.Get(r, "session-name")
 
 	var user User
@@ -53,19 +76,7 @@ func CheckSesionUser (w http.ResponseWriter, r *http.Request) (bool, User){
 	}
 
 	if session.Values["password"] != user.Password{
-		w.WriteHeader(http.StatusBadRequest)
 		return false, user
 	}	
 	return true, user
-}
-
-func Sign(r *http.Request) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(r.FormValue("password1")), bcrypt.DefaultCost)
-
-	if err != nil {
-		return err
-	}
-
-	DB.Create(&User{Username: r.FormValue("username"), Password: string(hashedPassword), Email: r.FormValue("email")})
-	return err
 }

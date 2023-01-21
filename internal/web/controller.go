@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"fmt"
 	. "webApp/pkg"
+	"io"
 )
 
 func Elements(w http.ResponseWriter, r *http.Request){
@@ -65,74 +66,98 @@ func Houses(w http.ResponseWriter, r *http.Request){
 	w.Write(jsonResp)
 }
 
+func RegisterUser(w http.ResponseWriter, r *http.Request){
+	if r.Method != "POST" {
+		return
+	}
 
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 
-// func SignPage(w http.ResponseWriter, r *http.Request){
-// 	tmpl, err := template.ParseFiles("../../ui_old_files/templates/sigin.html")
+	resp := make(map[string]string)
+
+	var user UserRegister
+    bodyBytes, _ := io.ReadAll(r.Body)
 	
-// 	if err != nil {
-// 		tmpl.Execute(w,"error tmpl")
-// 		return 
-// 	}
+	err := json.Unmarshal(bodyBytes,&user)
+	if err != nil {
+    	http.Error(w, err.Error(), http.StatusBadRequest)
+    	return
+	}
 
-// 	if r.Method == "POST" {
-// 		err = r.ParseForm()
+	if user.Password1 == "" || user.Username == ""{
+		resp["Register"] = "Not all field"
+		jsonResp, _ := json.Marshal(resp)
 
-// 		if err != nil {
-// 			fmt.Fprintf(w, "ParseForm() err: %v", err)
-// 			tmpl.Execute(w,"error form")
-// 			return
-// 		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(jsonResp)
+		return 
+	}
 
-// 		fmt.Println(r.FormValue("password1"), r.FormValue("passw"))
+	if user.Password1 != user.Password2{
+		resp["Register"] = "Not equal passwords"
+		jsonResp, _ := json.Marshal(resp)
 
-// 		if r.FormValue("password1") == ""{
-// 			tmpl.Execute(w,"not all field")
-// 			return 
-// 		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(jsonResp)
+		return
+	}
 
-// 		if r.FormValue("password1") != r.FormValue("password2"){
-// 			tmpl.Execute(w,"not equal passwords")
-// 			return
-// 		}
+	err = Sign(&user)
 
-// 		err = Sign(r)
+	if err != nil {
+		resp["Register"] = "Error create user"
+		jsonResp, _ := json.Marshal(resp)
 
-// 		if err != nil {
-// 			tmpl.Execute(w,"error create user")
-// 			return 
-// 		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(jsonResp)
+		return 
+	}
 
-// 		tmpl.Execute(w,nil)
-// 		return
+	resp["Register"] = "OK"
+	jsonResp, _ := json.Marshal(resp)
 
-// 	} else if r.Method == "GET" {
-// 		tmpl.Execute(w,nil)
-// 	}
-// }
+	fmt.Println(string(jsonResp))
+	w.Write(jsonResp)
+	
+}
 
-// func LoginPage(w http.ResponseWriter, r *http.Request){
-// 	tmpl, _ := template.ParseFiles("../../ui_old_files/templates/login.html")
-// 		if r.Method == "POST" {
-// 			err := r.ParseForm()
-// 			if err != nil {
-// 				fmt.Fprintf(w, "ParseForm() err: %v", err)
-// 				tmpl.Execute(w,"error form")
-// 				return
-// 			}
+func LoginUser(w http.ResponseWriter, r *http.Request){
+	if r.Method != "POST" {
+		return
+	}
 
-// 			if Login(w,r) {
-// 				http.Redirect(w, r, "home", http.StatusSeeOther)
-// 			}else{
-// 				fmt.Println("error login")
-// 				tmpl.Execute(w,"error login user")
-// 				return
-// 			}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	
+	resp := make(map[string]string)
 
-// 		}else if  r.Method == "GET" {
-// 			tmpl.Execute(w,nil)
-// 		}
-// }
+	var user UserLogin
+    bodyBytes, _ := io.ReadAll(r.Body)
+	
+	err := json.Unmarshal(bodyBytes,&user)
+	if err != nil {
+    	http.Error(w, err.Error(), http.StatusBadRequest)
+    	return
+	}
+
+	if Login(w,r,&user) {
+		resp["Login"] = "OK"
+		jsonResp, _ := json.Marshal(resp)
+		
+		fmt.Println(string(jsonResp))
+
+		w.Write(jsonResp)
+	}else{
+		fmt.Println("error login")
+
+		resp["Login"] = "error login user"
+		jsonResp, _ := json.Marshal(resp)
+
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(jsonResp)
+	}
+}
 
 // type UserPageTemplate struct {
 // 	UserShow User
@@ -140,7 +165,7 @@ func Houses(w http.ResponseWriter, r *http.Request){
 // }
 
 // func UserPage(w http.ResponseWriter, r *http.Request){
-// 	loginUser, user_wath := CheckSesionUser(w, r)
+// 	loginUser, user_wath := CheckSesionUser(r)
 
 // 	if !loginUser{
 // 		http.Redirect(w, r, "/login", http.StatusSeeOther)
