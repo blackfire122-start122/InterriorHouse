@@ -74,7 +74,7 @@ func Broadcaster() {
 
 
 func ws_chat(w http.ResponseWriter, r *http.Request){
-	res, user := CheckSesionUser(w, r)
+	res, user := CheckSesionUser(r)
 	if !res{return}
 
 	roomId := r.URL.Query().Get("roomId")
