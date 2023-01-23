@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import Header from './components/Header'
 import HouseList from './components/HouseList'
 import Login from './components/auth/Login'
+import Register from './components/auth/Register'
 
 import axios from 'axios';
 import './styles/App.css';
@@ -16,6 +17,7 @@ const client = axios.create({
 function App() {
     const [houses,setHouses] = useState([])
     const [showLogin,setShowLogin] = useState(false)
+    const [showRegister,setShowRegister] = useState(false)
 
     async function fetchHouse() {
         const response = await client.get("/houses")
@@ -28,9 +30,10 @@ function App() {
 
   return (
     <div className="App">
-        <Header setShowLogin={setShowLogin} />
+        <Header setShowLogin={setShowLogin} setShowRegister={setShowRegister} />
         <HouseList houses={houses} />
         { showLogin ? <Login client={client} setShowLogin={setShowLogin} /> : null }
+        { showRegister ? <Register client={client} setShowRegister={setShowRegister} /> : null }
     </div>
   )
 }
