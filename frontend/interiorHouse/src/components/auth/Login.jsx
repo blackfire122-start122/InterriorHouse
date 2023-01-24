@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const Login = function ({client,setShowLogin}) {
+const Login = function ({client}) {
 	const [username, setUserName] = useState()
 	const [password, setPassword] = useState()
 	const [error, setError] = useState("")
@@ -12,7 +12,6 @@ const Login = function ({client,setShowLogin}) {
 		}))
 		.then(function (response) {
 			console.log(response)
-			setShowLogin(false)
 		})
 		.catch(function (error) {
 			console.log(error)

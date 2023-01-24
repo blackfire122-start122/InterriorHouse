@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const Register = function ({client,setShowRegister}) {
+const Register = function ({client}) {
 	const [username, setUserName] = useState()
 	const [password1, setPassword1] = useState()
 	const [password2, setPassword2] = useState()
@@ -16,7 +16,6 @@ const Register = function ({client,setShowRegister}) {
 		}))
 		.then(function (response) {
 			console.log(response)
-			setShowRegister(false)
 		})
 		.catch(function (error) {
 			console.log(error)

@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import {Routes, Route } from 'react-router-dom';
 
+import Main from './components/Main'
 import Header from './components/Header'
-import HouseList from './components/HouseList'
+import CreateInterior from './components/CreateInterior'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 
@@ -15,27 +17,17 @@ const client = axios.create({
 })
 
 function App() {
-    const [houses,setHouses] = useState([])
-    const [showLogin,setShowLogin] = useState(false)
-    const [showRegister,setShowRegister] = useState(false)
-
-    async function fetchHouse() {
-        const response = await client.get("/houses")
-        setHouses(response.data)
-    }
-
-    useEffect(() => {
-        fetchHouse()
-    }, [])
-
-  return (
-    <div className="App">
-        <Header setShowLogin={setShowLogin} setShowRegister={setShowRegister} />
-        <HouseList houses={houses} />
-        { showLogin ? <Login client={client} setShowLogin={setShowLogin} /> : null }
-        { showRegister ? <Register client={client} setShowRegister={setShowRegister} /> : null }
-    </div>
-  )
+    return (
+        <div className="App">
+            <Header />
+            <Routes>
+                <Route path='/' element={<Main client={client} />}></ Route>
+                <Route path='/login' element={<Login client={client} />}></ Route>
+                <Route path='/register' element={<Register client={client} />}></ Route>
+                <Route path='/createInterior' element={<CreateInterior client={client} />}></ Route>
+            </ Routes>
+        </div>
+    )
 }
 
 export default App;
