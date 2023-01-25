@@ -1,12 +1,13 @@
 package main
 
 import (
-	"net/http"
+	"github.com/gin-gonic/gin"
 	"webApp/internal/web"
 )
 
 func main(){
-	web.HandleRequests()
+	router := gin.Default()
+	web.SetRouters(router)
 	// go web.Broadcaster()
-	http.ListenAndServe("localhost:8080",nil)
+	router.Run("localhost:8080")
 }

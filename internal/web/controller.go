@@ -2,6 +2,7 @@ package web
 
 import (
 	"net/http"
+	"github.com/gin-gonic/gin"
 	"encoding/json"
 	"strconv"
 	"fmt"
@@ -9,19 +10,16 @@ import (
 	"io"
 )
 
-func Elements(w http.ResponseWriter, r *http.Request){
+func Elements(c *gin.Context){
 	var elements []Element
 	var err = DB.Find(&elements).Error
-	
+
 	if err != nil{
 		fmt.Println("error db")
-		w.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	
 	resp := make([]map[string]string, len(elements))
 
 	for i, el := range elements {
@@ -32,25 +30,21 @@ func Elements(w http.ResponseWriter, r *http.Request){
 		// item["type"] = el.Type.Name
 		resp[i] = item
 	}
-
-	jsonResp, _ := json.Marshal(resp)
-	fmt.Println(string(jsonResp))
-	w.Write(jsonResp)
+	
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.JSON(http.StatusOK, resp)
 }
 
-func Houses(w http.ResponseWriter, r *http.Request){
+func Houses(c *gin.Context){
 	var houses []House
 	var err = DB.Find(&houses).Error
 	
 	if err != nil{
 		fmt.Println("error db")
-		w.WriteHeader(http.StatusInternalServerError)
+		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	
 	resp := make([]map[string]string, len(houses))
 
 	for i, el := range houses {
@@ -61,45 +55,33 @@ func Houses(w http.ResponseWriter, r *http.Request){
 		resp[i] = item
 	}
 
-	jsonResp, _ := json.Marshal(resp)
-	fmt.Println(string(jsonResp))
-	w.Write(jsonResp)
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.JSON(http.StatusOK, resp)
 }
 
-func RegisterUser(w http.ResponseWriter, r *http.Request){
-	if r.Method != "POST" {
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-
+func RegisterUser(c *gin.Context){
 	resp := make(map[string]string)
 
 	var user UserRegister
-    bodyBytes, _ := io.ReadAll(r.Body)
+    bodyBytes, _ := io.ReadAll(c.Request.Body)
 	
 	err := json.Unmarshal(bodyBytes,&user)
 	if err != nil {
-    	http.Error(w, err.Error(), http.StatusBadRequest)
+		c.Writer.WriteHeader(http.StatusBadRequest)
     	return
 	}
 
 	if user.Password1 == "" || user.Username == ""{
 		resp["Register"] = "Not all field"
-		jsonResp, _ := json.Marshal(resp)
 
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(jsonResp)
+		c.JSON(http.StatusBadRequest, resp)
 		return 
 	}
 
 	if user.Password1 != user.Password2{
 		resp["Register"] = "Not equal passwords"
-		jsonResp, _ := json.Marshal(resp)
-
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(jsonResp)
+		
+		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 
@@ -107,55 +89,38 @@ func RegisterUser(w http.ResponseWriter, r *http.Request){
 
 	if err != nil {
 		resp["Register"] = "Error create user"
-		jsonResp, _ := json.Marshal(resp)
 
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(jsonResp)
+		c.JSON(http.StatusBadRequest, resp)
 		return 
 	}
 
 	resp["Register"] = "OK"
-	jsonResp, _ := json.Marshal(resp)
-
-	fmt.Println(string(jsonResp))
-	w.Write(jsonResp)
-	
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.JSON(http.StatusOK, resp)
 }
 
-func LoginUser(w http.ResponseWriter, r *http.Request){
-	if r.Method != "POST" {
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	
+func LoginUser(c *gin.Context){
 	resp := make(map[string]string)
 
 	var user UserLogin
-    bodyBytes, _ := io.ReadAll(r.Body)
+    bodyBytes, _ := io.ReadAll(c.Request.Body)
 	
 	err := json.Unmarshal(bodyBytes,&user)
 	if err != nil {
-    	http.Error(w, err.Error(), http.StatusBadRequest)
+    	c.Writer.WriteHeader(http.StatusBadRequest)
     	return
 	}
 
-	if Login(w,r,&user) {
+	if Login(c.Writer,c.Request,&user) {
 		resp["Login"] = "OK"
-		jsonResp, _ := json.Marshal(resp)
-		
-		fmt.Println(string(jsonResp))
 
-		w.Write(jsonResp)
+		c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+		c.JSON(http.StatusOK, resp)
 	}else{
 		fmt.Println("error login")
 
 		resp["Login"] = "error login user"
-		jsonResp, _ := json.Marshal(resp)
-
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(jsonResp)
+		c.JSON(http.StatusOK, resp)
 	}
 }
 

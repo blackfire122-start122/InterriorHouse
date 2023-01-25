@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/gorilla/websocket"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"encoding/json"
 	"fmt"
@@ -73,19 +74,19 @@ func Broadcaster() {
 }
 
 
-func ws_chat(w http.ResponseWriter, r *http.Request){
-	res, user := CheckSesionUser(r)
+func ws_chat(c *gin.Context){
+	res, user := CheckSesionUser(c.Request)
 	if !res{return}
 
-	roomId := r.URL.Query().Get("roomId")
+	roomId := c.Request.URL.Query().Get("roomId")
 
 	if roomId == ""{
 		fmt.Println("error get roomId")
-		w.WriteHeader(http.StatusBadRequest)
+		c.Writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	conn, err := upgrader.Upgrade(w, r, nil)
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 	    fmt.Println(err)
 	    return
