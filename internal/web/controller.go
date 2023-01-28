@@ -10,9 +10,11 @@ import (
 	"io"
 )
 
+// err = DB.Limit(Limit).Offset(countPosts).Find(&posts, "post_user_id = ?", user.Id).Error
+
 func Elements(c *gin.Context){
 	var elements []Element
-	var err = DB.Find(&elements).Error
+	var err = DB.Preload("Type").Find(&elements).Error
 
 	if err != nil{
 		fmt.Println("error db")
@@ -27,7 +29,8 @@ func Elements(c *gin.Context){
 		item["Id"] = strconv.FormatUint(el.Id,10)
 		item["Name"] = el.Name
 		item["File"] = el.File
-		// item["type"] = el.Type.Name
+		item["Type"] = el.Type[0].Name
+
 		resp[i] = item
 	}
 	
@@ -124,34 +127,33 @@ func LoginUser(c *gin.Context){
 	}
 }
 
-// type UserPageTemplate struct {
-// 	UserShow User
-// 	Self bool	
-// }
+func UserInteriors(c *gin.Context){
+	loginUser, user := CheckSesionUser(c.Request)
 
-// func UserPage(w http.ResponseWriter, r *http.Request){
-// 	loginUser, user_wath := CheckSesionUser(r)
+	fmt.Println(loginUser)
 
-// 	if !loginUser{
-// 		http.Redirect(w, r, "/login", http.StatusSeeOther)
-// 		return
-// 	}
+	if !loginUser{
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 
-// 	username := r.URL.Query().Get("username")
+	err := DB.Preload("Interiors").First(&user, "Username = ?", user.Username).Error
+	
+	if err != nil{
+		fmt.Println("error get user")
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return 
+	}
 
-// 	var user_show User
+	resp := make([]map[string]string, len(user.Interiors))
 
-// 	if username == ""{
-// 		user_show = user_wath
-// 	}else{
-// 		err := DB.First(&user_show, "Username = ?", username).Error
-// 		if err != nil{
-// 			fmt.Println("error get user")
-// 			w.WriteHeader(http.StatusBadRequest)
-// 			return 
-// 		}
-// 	}
+	for i, interior := range user.Interiors {
+		item := make(map[string]string)
+		item["Id"] = strconv.FormatUint(interior.Id,10)
+		item["File"] = interior.File
+		resp[i] = item
+	}
 
-// 	tmpl, _ := template.ParseFiles("../../ui_old_files/templates/user.html")
-// 	tmpl.Execute(w,UserPageTemplate{user_show,user_show.Id == user_wath.Id})
-// }
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.JSON(http.StatusOK, resp)
+}

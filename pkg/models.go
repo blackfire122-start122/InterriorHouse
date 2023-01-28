@@ -12,7 +12,7 @@ type User struct {
 	Id uint64 `gorm:"primaryKey"`
 	Username string
 	Password string
-	Interiors []*Interior `gorm:"foreignKey:InterriorUserId"`
+	Interiors []Interior `gorm:"foreignKey:InterriorUserId"`
 	Email string
 }
 
@@ -28,7 +28,7 @@ type Element struct {
 	Id uint64 `gorm:"primaryKey"`
 	Name string
 	File string
-	Type TypeElement `gorm:"many2many:elemet_types"`
+	Type []TypeElement `gorm:"many2many:elemet_types"`
 }
 
 type TypeElement struct {
