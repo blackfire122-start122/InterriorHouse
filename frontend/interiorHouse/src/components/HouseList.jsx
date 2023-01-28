@@ -1,6 +1,6 @@
 import React from 'react';
 import HouseItem from './HouseItem'
-import '../styles/HouseList.css';
+import '../static/styles/HouseList.css';
 
 const HouseList = function ({houses}) {
 	return(
