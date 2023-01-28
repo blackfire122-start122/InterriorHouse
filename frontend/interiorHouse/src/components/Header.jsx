@@ -1,14 +1,14 @@
 import React from 'react';
-import '../styles/Header.css'
+import { Link } from 'react-router-dom';
 
-const Header = function ({rightNavShow,setRightNavShow}) {
-	function setRightNavShowClick(){
-		setRightNavShow(!rightNavShow)
-	}
+const Header = function () {
 	return(
 		<header>
 			<h1>Interior House</h1>
-			<button onClick={setRightNavShowClick}></button>
+			<Link to='/'>Home</Link>
+			<Link to='/login'>Login</Link>
+			<Link to='/register'>Register</Link>
+			<Link to='/CreateInterior'>CreateInterior</Link>
 		</header>
 	)
 }

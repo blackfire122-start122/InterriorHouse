@@ -1,0 +1,11 @@
+header{
+	header:1em;
+	background:green;
+	display: flex;
+	justify-content: space-between;
+}
+
+header > button{
+	width: 2em;
+	background-image: url('/public/menu.png');
+}

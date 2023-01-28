@@ -1,0 +1,25 @@
+.RightNav{
+	position: absolute;
+	right: 0;
+	width: 15%;
+	height: 95%;
+	background-color: rgba(0, 0, 0, 0.9);
+	padding: 7px;
+}
+
+.links{
+	display: flex;
+	flex-direction: column;
+}
+
+.link{
+	text-decoration: none;
+	color: white;
+	font-size: 1.5em;
+	margin-top: 1%;
+}
+
+.RightNav > h2{
+	margin-bottom: 1em;
+	color:green;
+}
