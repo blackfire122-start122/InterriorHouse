@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import '../styles/Header.css';
+import '../static/styles/Header.css';
 
 const Header = function ({rightNav,setRightNav}) {
 	function setRightNavClick(){
@@ -11,7 +10,7 @@ const Header = function ({rightNav,setRightNav}) {
 	return(
 		<header>
 			<h1>Interior House</h1>
-			<button onClick={setRightNavClick}></button>
+			<img src={require("../static/images/menu.png")} alt="menu" onClick={setRightNavClick} />
 		</header>
 	)
 }

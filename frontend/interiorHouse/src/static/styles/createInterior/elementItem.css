@@ -1,0 +1,11 @@
+.elementItem{
+	width: 50%;
+	text-align: center;
+}
+
+.elementItem > img{
+	height:10.6em;
+	width:95%;
+	object-fit:cover; 
+}
+

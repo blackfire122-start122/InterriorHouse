@@ -9,7 +9,7 @@ import Register from './components/auth/Register'
 import RightNav from './components/RightNav'
 
 import axios from 'axios';
-import './styles/App.css';
+import './static/styles/App.css';
 
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 const client = axios.create({

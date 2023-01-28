@@ -2,7 +2,7 @@ import React from 'react';
 
 import ElementItem from './ElementItem'
 
-import './../../styles/createInterior/elementList.css';
+import '../../static/styles/createInterior/elementList.css';
 
 const ElementList = function ({elements}) {
 	return(
@@ -10,6 +10,23 @@ const ElementList = function ({elements}) {
 			<h2>Elements</h2>
 			<div className="elementList">
 				
+
+		<div className="elementItem">
+			<img src={require("./../../static/images/main-info.jpg")} />
+            <h3>element.Name</h3>
+            <p>Type: type</p>
+        </div>
+		<div className="elementItem">
+			<img src={require("./../../static/images/main-info.jpg")} />
+            <h3>element.Name</h3>
+            <p>Type: type</p>
+        </div>
+		<div className="elementItem">
+			<img src={require("./../../static/images/main-info.jpg")} />
+            <h3>element.Name</h3>
+            <p>Type: type</p>
+        </div>
+
 				{elements.map(element => 
 					<ElementItem element={element} key={element.Id}/>
 				)}

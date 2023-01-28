@@ -1,0 +1,17 @@
+header{
+	background:green;
+	display: flex;
+	justify-content: space-between;
+	color: black;
+}
+
+header > img{
+	position: relative;
+	right: 1%;
+	height: 2.4em;
+}
+
+header > h1 {
+	position: relative;
+	left: 1%;
+}

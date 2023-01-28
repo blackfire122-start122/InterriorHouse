@@ -1,10 +1,12 @@
 .mainElements{
-	border: solid 1px black;
+	border-left:solid 1px white;
+	border-top:solid 1px white;
+	border-bottom:solid 1px white;
 	border-radius: 3px 0 0 3px;
 	position:fixed;
 	right: 0;
 	top: 10%;
-	max-width: 40%;
+	max-width: 30%;
 	height: 80%;
 	padding: 5px;
 }

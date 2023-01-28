@@ -1,20 +1,29 @@
 .main-info{
 	height: 50vh;
-	background-image: url('/public/main-info.jpg');
-	color:white;
+	background-image: url('../../static/images/main-info.jpg');
+	background-size: cover;
+	background-position: center;
+
+}
+
+.main-info > h2{
+	padding:2%;
 }
 
 .main-info > h3{
+	padding:3%%;
 	position:relative;
 	left: 10%;
 	width:60%;
 }
 
 .main-info > h1{
+	padding:3%;
 	float: right;
 }
 
 .main > h1{
+	padding:3%%;
 	text-align: center;
 	padding: 7px;
 	font-size:2em;

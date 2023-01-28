@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/HouseItem.css'
+import '../static/styles/HouseItem.css'
 
 const Header = function ({house}) {
 	return(

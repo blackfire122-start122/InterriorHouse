@@ -7,7 +7,7 @@ import { DoubleSide, MathUtils } from "three";
 
 import ElementList from './createInteriorComponents/ElementList'
 
-import './../styles/createInterior/createInterior.css';
+import '../static/styles/createInterior/createInterior.css';
 
 const CreateInterior = function ({client}) {
     const [elements,setElements] = useState([])
@@ -24,7 +24,7 @@ const CreateInterior = function ({client}) {
 
 	return(
 		<div className="createInterior">
-            <Canvas style={{height: `100%`, position: `absolute`, top:`0` }}>
+            <Canvas style={{height: `100%`, position: `absolute`, top:`0`, zIndex:`-1` }}>
                 <GreenSquare />
                 <ambientLight />
                 <PerspectiveCamera position={[2, 2, 2]} makeDefault />

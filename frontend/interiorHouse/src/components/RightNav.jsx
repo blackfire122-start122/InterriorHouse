@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import '../styles/RightNav.css'
+import '../static/styles/RightNav.css'
 
 const RightNav = function () {
 	return(
