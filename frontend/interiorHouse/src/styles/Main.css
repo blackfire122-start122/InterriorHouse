@@ -14,8 +14,8 @@
 	float: right;
 }
 
-.main > h2{
+.main > h1{
 	text-align: center;
-	margin-top: 1%;
+	padding: 7px;
 	font-size:2em;
 }

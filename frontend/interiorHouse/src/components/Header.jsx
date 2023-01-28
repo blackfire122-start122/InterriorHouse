@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = function () {
+import '../styles/Header.css';
+
+const Header = function ({rightNav,setRightNav}) {
+	function setRightNavClick(){
+		setRightNav(!rightNav)
+	}
+	
 	return(
 		<header>
 			<h1>Interior House</h1>
-			<Link to='/'>Home</Link>
-			<Link to='/login'>Login</Link>
-			<Link to='/register'>Register</Link>
-			<Link to='/CreateInterior'>CreateInterior</Link>
+			<button onClick={setRightNavClick}></button>
 		</header>
 	)
 }
