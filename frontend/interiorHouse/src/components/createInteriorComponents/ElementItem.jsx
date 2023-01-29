@@ -7,11 +7,17 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
-const ElementItem = function ({setcreateObject, element}) {
+const ElementItem = function ({scene, setcreateObject, element}) {
 	const gltf = useLoader(GLTFLoader, element.File)
 
+	function createObject(){
+		let obj = gltf.scene.clone()
+		scene.add(obj)
+		setcreateObject({create:true, object:obj})
+	}
+
 	return(
-		<div onClick={()=>{setcreateObject({create:true, object:gltf.scene.clone()})}} className="elementItem">
+		<div onClick={createObject} className="elementItem">
 			<Canvas style={{height: `10em`, width: `95%`, background:`white` }}>
 				<Suspense fallback={null}>
 					<primitive object={gltf.scene} />
