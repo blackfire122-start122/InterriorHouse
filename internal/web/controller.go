@@ -33,8 +33,7 @@ func Elements(c *gin.Context){
 
 		resp[i] = item
 	}
-	
-	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -58,7 +57,6 @@ func Houses(c *gin.Context){
 		resp[i] = item
 	}
 
-	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -98,7 +96,6 @@ func RegisterUser(c *gin.Context){
 	}
 
 	resp["Register"] = "OK"
-	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -116,8 +113,6 @@ func LoginUser(c *gin.Context){
 
 	if Login(c.Writer,c.Request,&user) {
 		resp["Login"] = "OK"
-
-		c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
 		c.JSON(http.StatusOK, resp)
 	}else{
 		fmt.Println("error login")
@@ -129,8 +124,6 @@ func LoginUser(c *gin.Context){
 
 func UserInteriors(c *gin.Context){
 	loginUser, user := CheckSesionUser(c.Request)
-
-	fmt.Println(loginUser)
 
 	if !loginUser{
 		c.Writer.WriteHeader(http.StatusUnauthorized)
@@ -154,6 +147,22 @@ func UserInteriors(c *gin.Context){
 		resp[i] = item
 	}
 
-	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.JSON(http.StatusOK, resp)
+}
+
+func GetUser(c *gin.Context){
+	loginUser, user := CheckSesionUser(c.Request)
+
+	if !loginUser{
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	resp := make(map[string]string)
+
+	resp["Id"] = strconv.FormatUint(user.Id,10)
+	resp["Username"] = user.Username
+	resp["Email"] = user.Email
+
 	c.JSON(http.StatusOK, resp)
 }

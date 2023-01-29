@@ -11,6 +11,7 @@ func SetRouters(router *gin.Engine){
 	router.POST("/api/v1/user/register",RegisterUser)
 	router.POST("/api/v1/user/login",LoginUser)
 
+	router.GET("/api/v1/user/getUser",GetUser)
 	router.GET("/api/v1/user/interiors",UserInteriors)
 
 	// http.HandleFunc("/ws/chat",ws_chat)

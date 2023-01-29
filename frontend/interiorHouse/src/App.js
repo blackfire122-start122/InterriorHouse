@@ -7,7 +7,7 @@ import CreateInterior from './components/CreateInterior'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import RightNav from './components/RightNav'
-import User from './components/User'
+import User from './components/user/User'
 
 import axios from 'axios';
 import './static/styles/App.css';
@@ -15,7 +15,7 @@ import './static/styles/App.css';
 axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 const client = axios.create({
   baseURL: "http://localhost:8080/api/v1",
-  // withCredentials: true
+  withCredentials: true
   // while send on all request cokies 
 })
 

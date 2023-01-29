@@ -7,6 +7,7 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
+    // delete strict mode in deploy
     <React.StrictMode>
         <BrowserRouter>
             <App />
