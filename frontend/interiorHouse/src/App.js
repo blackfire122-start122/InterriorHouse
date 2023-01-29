@@ -21,6 +21,7 @@ const client = axios.create({
 
 function App() {
     const [rightNav,setRightNav] = useState(false)
+
     return (
         <div className="App">
             <Header rightNav={rightNav} setRightNav={setRightNav} />

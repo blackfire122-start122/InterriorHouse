@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
-import { DoubleSide, MathUtils } from "three";
+import { DoubleSide, MathUtils, Raycaster, Vector2 } from "three";
 
 import ElementList from './createInteriorComponents/ElementList'
 
@@ -11,6 +11,11 @@ import '../static/styles/createInterior/createInterior.css';
 
 const CreateInterior = function ({client}) {
     const [elements,setElements] = useState([])
+
+    const [scene,setScene] = useState(false)
+    const [camera,setCamera] = useState(false)
+
+    const [createObject,setcreateObject] = useState({create:false,object:null})
 
     useEffect(() => {
         fetchElements()
@@ -22,24 +27,53 @@ const CreateInterior = function ({client}) {
         setElements(response.data)
     }
 
+    function canvasOnClick(event){
+        setcreateObject({create:false,object:null})
+
+        const raycaster = new Raycaster();
+        const pointer = new Vector2();
+
+        pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    
+        raycaster.setFromCamera( pointer, camera );
+
+        const intersects = raycaster.intersectObjects(scene.children);
+        
+        for ( let i = 0; i < intersects.length; i ++ ) {
+            console.log(intersects[i])
+            // ToDo oncklick object move him
+        }
+
+        if (createObject.create){
+            createObject.object.position.set(intersects[0].point.x,intersects[0].point.y,intersects[0].point.z)
+            scene.add(createObject.object)
+        }
+    }
+
+    function onCreatedCanvas(state){
+        setScene(state.scene)
+        setCamera(state.camera)
+    }
+
 	return(
 		<div className="createInterior">
-            <Canvas style={{height: `100%`, position: `absolute`, top:`0`, zIndex:`-1` }}>
-                <GreenSquare />
+            <Canvas onCreated={onCreatedCanvas} onClick={canvasOnClick} style={{background:`white`, height: `100%`, position: `absolute`, top:`0`, zIndex:`-1` }}>
+                <Square />
                 <ambientLight />
-                <PerspectiveCamera position={[2, 2, 2]} makeDefault />
+                <PerspectiveCamera position={[0, 10, 10]} makeDefault />
                 <OrbitControls />
             </ Canvas>
-            <ElementList elements={elements} />
+            <ElementList setcreateObject={setcreateObject} elements={elements} />
         </div>
 	)
 }
 
-function GreenSquare() {
+function Square() {
   return (
-    <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, MathUtils.degToRad(45)]} scale={[5, 5, 5]}>
-      <planeBufferGeometry />
-      <meshBasicMaterial color="green" side={DoubleSide} />
+    <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[20, 20, 20]}>
+      <planeGeometry />
+      <meshBasicMaterial color="gray" side={DoubleSide} />
     </mesh>
   );
 }
