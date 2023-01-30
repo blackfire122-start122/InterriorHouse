@@ -8,6 +8,7 @@ import (
 	"fmt"
 	. "webApp/pkg"
 	"io"
+	"os"
 )
 
 // err = DB.Limit(Limit).Offset(countPosts).Find(&posts, "post_user_id = ?", user.Id).Error
@@ -166,3 +167,36 @@ func GetUser(c *gin.Context){
 
 	c.JSON(http.StatusOK, resp)
 }
+
+func SaveUserScene(c *gin.Context){
+	loginUser, _ := CheckSesionUser(c.Request)
+
+	if !loginUser{
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	
+	bodyBytes, _ := io.ReadAll(c.Request.Body)
+
+	f, err := os.Create("media/interiorFiles/1.zip")
+
+	if err != nil {
+        c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+    }
+
+    defer f.Close()
+
+    _, err2 := f.WriteString(string(bodyBytes))
+
+    if err2 != nil {
+		fmt.Println(err)
+        c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+    }
+
+    f.Name()
+
+	c.JSON(http.StatusOK, nil)
+}
+

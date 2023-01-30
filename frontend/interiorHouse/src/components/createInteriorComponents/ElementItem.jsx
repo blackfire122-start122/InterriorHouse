@@ -10,6 +10,7 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 const ElementItem = function ({scene, setcreateObject, element}) {
 	const gltf = useLoader(GLTFLoader, element.File)
 
+
 	function createObject(){
 		let obj = gltf.scene.clone()
 		scene.add(obj)
