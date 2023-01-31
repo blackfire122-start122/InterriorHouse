@@ -10,7 +10,6 @@ import ElementList from './createInteriorComponents/ElementList'
 import '../static/styles/createInterior/createInterior.css';
 
 import JSZip from 'jszip';
-import FileSaver from 'file-saver';
 const zip = new JSZip();
 
 const CreateInterior = function ({client}) {
@@ -42,7 +41,7 @@ const CreateInterior = function ({client}) {
 
     async function saveScene(sceneJson) {
         zip.file('1.json', JSON.stringify(sceneJson));
-        zip.generateAsync({type:"blob", compression:"DEFLATE", compressionOptions: { level: 9 }}).then(async function (content) {
+        zip.generateAsync({type:"string", compression:"DEFLATE", compressionOptions: { level: 9 }}).then(async function (content) {
             await client.post("/user/saveScene", content)
             .then(function (response) {
                 console.log(response)
@@ -92,10 +91,12 @@ const CreateInterior = function ({client}) {
             createWall = new Mesh(new BoxBufferGeometry(2,2,2), new MeshStandardMaterial())
             
             const intersects = mouse2dTo3d(event)
-            createWall.position.set(intersects[0].point.x,0,intersects[0].point.z)
+            // createWall.position.set(intersects[0].point.x,0,intersects[0].point.z)
             scene.add(createWall)
 
-            console.log(createWall)
+            for (let i = createWall.geometry.attributes.normal.array.length-1; i >= 0; i--) {
+                console.log(createWall.geometry.attributes.normal.array[i])
+            }
 
         }else if(createWallMode && createWall){
             createWall = false
@@ -130,15 +131,12 @@ const CreateInterior = function ({client}) {
 
     function OnClickBtnLoad() {
         client.get("http://127.0.0.1:80/media/interiorFiles/1.zip",{ withCredentials: false }).then(res => {
-
-            console.log(res)
-
-            // zip.loadAsync(res.data).then((content)=>{
-            //     console.log(content)
-            // })
-
-            // let LoadScene = new ObjectLoader().parse(res.data)
-            // setScene(LoadScene)
+            zip.loadAsync(res.data).then((content)=>{
+                content.files["1.json"].async("text").then((txt)=>{
+                    let LoadScene = new ObjectLoader().parse(JSON.parse(txt))
+                    setScene(LoadScene)
+                })
+            })
         })
     }
 
