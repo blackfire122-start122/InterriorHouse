@@ -26,6 +26,8 @@ const CreateInterior = function ({client}) {
 
     let createWallMode = false
     let createWall = false
+    let moveObjectMode = false
+    let moveObject = false
 
     // const gridHelper = new GridHelper(100,100);
 
@@ -77,20 +79,31 @@ const CreateInterior = function ({client}) {
                 createObject.object.position.set(intersects[0].point.x,0,intersects[0].point.z)
             }
         }
+
+        if (moveObjectMode){
+            const intersects = mouse2dTo3d(event)
+            if (intersects.length > 0){
+                moveObject.position.set(intersects[0].point.x,0,intersects[0].point.z)
+            }
+        }
     }
 
     function canvasOnClick(event){
         const intersects = mouse2dTo3d(event)
-
-        // for ( let i = 0; i < intersects.length; i ++ ) {
-        //     console.log(intersects[i])
-        //     // ToDo oncklick object move him
-        // }
+        for ( let i = 0; i < intersects.length; i ++ ) {
+            if (intersects[i].object.name !== "floor"){
+                moveObject = intersects[i].object
+                moveObjectMode = true
+                break
+            }
+            if(moveObjectMode && moveObject){
+                moveObjectMode = false
+                moveObject = false
+            }
+        }
 
         if(createWallMode && !createWall){
             createWall = new Mesh(new BoxBufferGeometry(2,2,2), new MeshStandardMaterial())
-            
-            const intersects = mouse2dTo3d(event)
             // createWall.position.set(intersects[0].point.x,0,intersects[0].point.z)
             scene.add(createWall)
 
@@ -172,7 +185,7 @@ const CreateInterior = function ({client}) {
 
 function Square() {
   return (
-    <mesh position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[20, 20, 20]}>
+    <mesh name={"floor"} position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[20, 20, 20]}>
       <planeBufferGeometry />
       <meshBasicMaterial color="gray" side={DoubleSide} />
     </mesh>
