@@ -134,6 +134,10 @@ const CreateInterior = function ({client}) {
             zip.loadAsync(res.data).then((content)=>{
                 content.files["1.json"].async("text").then((txt)=>{
                     let LoadScene = new ObjectLoader().parse(JSON.parse(txt))
+
+                    scene.children = LoadScene.children
+                    // ToDo what ??? logic
+                   
                     setScene(LoadScene)
                 })
             })
