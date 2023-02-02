@@ -12,7 +12,6 @@ const RightNav = function () {
 				<Link className="link" to='/login'>Login</Link>
 				<Link className="link" to='/register'>Register</Link>
 				<Link className="link" to='/user'>My page</Link>
-				<Link className="link" to='/CreateInterior'>CreateInterior</Link>
 			</div>
 		</div>
 	)

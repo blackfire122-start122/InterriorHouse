@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-
 import InteriorList from './InteriorList'
 
 const User = function ({client}) {
@@ -29,7 +28,6 @@ const User = function ({client}) {
 		<h1>{username}</h1>
 		<p>{email}</p>
 		<InteriorList interiors={interiors} />
-		<button>Create Interior</button>
 	</div>
 	)
 }

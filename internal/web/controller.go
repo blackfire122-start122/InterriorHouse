@@ -8,7 +8,6 @@ import (
 	"fmt"
 	. "webApp/pkg"
 	"io"
-	"os"
 )
 
 // err = DB.Limit(Limit).Offset(countPosts).Find(&posts, "post_user_id = ?", user.Id).Error
@@ -169,33 +168,46 @@ func GetUser(c *gin.Context){
 }
 
 func SaveUserScene(c *gin.Context){
-	loginUser, _ := CheckSesionUser(c.Request)
+	loginUser, user := CheckSesionUser(c.Request)
 
 	if !loginUser{
 		c.Writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	
-	bodyBytes, _ := io.ReadAll(c.Request.Body)
+	var interior Interior
+	interiorId := c.PostForm("interiorId")
 
-	f, err := os.Create("media/interiorFiles/1.zip")
+	file, err := c.FormFile("file")
+
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return 
+	}
+
+	err = DB.First(&interior, "id = ? AND interrior_user_id = ?", interiorId, user.Id).Error
+	
+	if err != nil{
+		fmt.Println("error get interior")
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return 
+	}
+
+	interior.File = "media/interiorFiles/"+interiorId+".zip"
+
+	err = c.SaveUploadedFile(file, interior.File)
 
 	if err != nil {
         c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
     }
 
-    defer f.Close()
+    err = DB.Save(&interior).Error
 
-    _, err2 := f.WriteString(string(bodyBytes))
-
-    if err2 != nil {
-		fmt.Println(err)
-        c.Writer.WriteHeader(http.StatusInternalServerError)
-		return
+    if err != nil {
+		fmt.Println("error save interior")
+		c.Writer.WriteHeader(http.StatusBadRequest)
+    	return 
     }
-
-    f.Name()
 
 	c.JSON(http.StatusOK, nil)
 }
