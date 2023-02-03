@@ -1,21 +1,21 @@
 import React, {useState, useEffect} from 'react';
 
-import HouseList from './HouseList'
+import InteriorList from './InteriorList'
 
 import '../static/styles/Main.css';
 
 
 const Main = function ({client}) {
-	const [houses,setHouses] = useState([])
+	const [interiors,setInteriors] = useState([])
     
     useEffect(() => {
-        fetchHouse()
+        fetchInteriorStart()
         // eslint-disable-next-line
     }, [])
 
-    async function fetchHouse() {
-        const response = await client.get("/houses")
-        setHouses(response.data)
+    async function fetchInteriorStart() {
+        const response = await client.get("/InteriorsStart")
+        setInteriors(response.data)
     }
 
 	return(
@@ -25,8 +25,8 @@ const Main = function ({client}) {
                 <h3>Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Voluptatem qui atque, dolore est quod rem placeat architecto vitae autem cupiditate itaque aperiam consequatur nemo recusandae commodi nisi maxime. Nemo, aut!Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Voluptatem qui atque, dolore est quod rem placeat architecto vitae autem cupiditate itaque aperiam consequatur nemo recusandae commodi nisi maxime. Nemo, aut!Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Voluptatem qui atque, dolore est quod rem placeat architecto vitae autem cupiditate itaque aperiam consequatur nemo recusandae commodi nisi maxime. Nemo, aut!</h3>
                 <h1> Lorem ipsum, dolor sit, amet consectetur adipisicing elit.</h1>
             </div>
-            <h1 className="">Start with house</h1>
-            <HouseList houses={houses} />
+            <h1 className="">Start with interior</h1>
+            <InteriorList interiors={interiors} />
         </div>
 	)
 }

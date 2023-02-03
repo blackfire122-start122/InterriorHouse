@@ -19,8 +19,17 @@ type User struct {
 type Interior struct {
 	gorm.Model
 	Id uint64 `gorm:"primaryKey"`
+	Name string
 	File string
+	Image string
 	InterriorUserId uint64
+}
+
+type InteriorStart struct {
+	gorm.Model
+	Id uint64 `gorm:"primaryKey"`
+	Interior Interior `gorm:"foreignKey:InterriorId"`
+	InterriorId uint64
 }
 
 type Element struct {
@@ -37,13 +46,6 @@ type TypeElement struct {
 	Name string
 }
 
-type House struct {
-	gorm.Model
-	Id uint64 `gorm:"primaryKey"`
-	Name string
-	Image string
-}
-
 func init() {
     db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
     DB = db
@@ -52,5 +54,5 @@ func init() {
 		panic("failed to connect database")
 	}
 
-	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{}, &House{})
+	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{}, &InteriorStart{})
 }

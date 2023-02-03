@@ -37,9 +37,9 @@ func Elements(c *gin.Context){
 	c.JSON(http.StatusOK, resp)
 }
 
-func Houses(c *gin.Context){
-	var houses []House
-	var err = DB.Find(&houses).Error
+func InteriorsStart(c *gin.Context){
+	var interiors []InteriorStart
+	var err = DB.Preload("Interior").Find(&interiors).Error
 	
 	if err != nil{
 		fmt.Println("error db")
@@ -47,13 +47,14 @@ func Houses(c *gin.Context){
 		return
 	}
 
-	resp := make([]map[string]string, len(houses))
+	resp := make([]map[string]string, len(interiors))
 
-	for i, el := range houses {
+	for i, el := range interiors {
 		item := make(map[string]string)
-		item["Id"] = strconv.FormatUint(el.Id,10)
-		item["Name"] = el.Name
-		item["Image"] = el.Image
+		item["Id"] = strconv.FormatUint(el.Interior.Id,10)
+		item["Name"] = el.Interior.Name
+		item["File"] = el.Interior.File
+		item["Image"] = el.Interior.Image
 		resp[i] = item
 	}
 
@@ -144,6 +145,7 @@ func UserInteriors(c *gin.Context){
 		item := make(map[string]string)
 		item["Id"] = strconv.FormatUint(interior.Id,10)
 		item["File"] = interior.File
+		item["Name"] = interior.Name
 		resp[i] = item
 	}
 
@@ -212,3 +214,44 @@ func SaveUserScene(c *gin.Context){
 	c.JSON(http.StatusOK, nil)
 }
 
+func CreateUserInterior(c *gin.Context){
+	loginUser, user := CheckSesionUser(c.Request)
+
+	if !loginUser{
+		c.Writer.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+    bodyBytes, _ := io.ReadAll(c.Request.Body)
+	interiorData := make(map[string]string)
+
+	err := json.Unmarshal(bodyBytes,&interiorData)
+	if err != nil {
+    	c.Writer.WriteHeader(http.StatusBadRequest)
+    	return
+	}
+
+	if interiorData["name"]==""{
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	interior := Interior{
+		Name:interiorData["name"],
+		InterriorUserId:user.Id,
+	}
+
+	err = DB.Create(&interior).Error
+	
+	if err != nil{
+		fmt.Println("error create interior")
+		c.Writer.WriteHeader(http.StatusInternalServerError)
+		return 
+	}
+
+	resp := make(map[string]string)
+
+	resp["Create"] = "Ok"
+	resp["Id"] = strconv.FormatUint(interior.Id,10)
+	c.JSON(http.StatusOK, resp)
+}
