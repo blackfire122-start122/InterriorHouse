@@ -27,6 +27,7 @@ const ChangeInterior = function ({client}) {
 
     const [scene,setScene] = useState(new Scene())
     const [camera,setCamera] = useState(0)
+    const [renderer,setRenderer] = useState(0)
 
     const [createObject,setcreateObject] = useState({create:false,object:null})
 
@@ -53,16 +54,25 @@ const ChangeInterior = function ({client}) {
         setElements(response.data)
     }
 
-    // onsave create screenshot 
-
     async function saveScene(sceneJson, interiorId) {
+        let screenshot = renderer.domElement.toDataURL("image/jpeg")
+        
         zip.file(interiorId+'.json', JSON.stringify(sceneJson));
         zip.generateAsync({type:"string", compression:"DEFLATE", compressionOptions: { level: 9 }}).then(async function (content) {
             let formData = new FormData();
+
             let blob = new Blob([content], { type: 'text/plain' });
-            var file = new File([blob], interiorId+".zip", {type: "text/plain"});
+            let file = new File([blob], interiorId+".zip", {type: "text/plain"});
+
+            let image
+
+            await fetch(screenshot)
+            .then(function(res){return res.arrayBuffer()})
+            .then(function(buf){return new File([buf], "filename",{type:"image/jpeg"})})
+            .then((f)=>{image = f})
 
             formData.append("file", file);
+            formData.append("image", image);
             formData.append("interiorId", interiorId);
 
             await client.post("/user/saveScene", formData)
@@ -166,6 +176,7 @@ const ChangeInterior = function ({client}) {
     function onCreatedCanvas(stateCanvas){
         setScene(stateCanvas.scene)
         setCamera(stateCanvas.camera)
+        setRenderer(stateCanvas.gl)
 
         if (state){
             if (state.new){
@@ -204,7 +215,7 @@ const ChangeInterior = function ({client}) {
                 <button onClick={OnClickBtnSave}>Save</button>
             </div>
             
-            <Canvas onMouseMove={onMouseMoveCanvas} onCreated={onCreatedCanvas} onClick={canvasOnClick} style={{background:`white`, height: `100%`, position: `absolute`, top:`0`, zIndex:`-1` }}>
+            <Canvas gl={{ preserveDrawingBuffer: true }} onMouseMove={onMouseMoveCanvas} onCreated={onCreatedCanvas} onClick={canvasOnClick} style={{background:`white`, height: `100%`, position: `absolute`, top:`0`, zIndex:`-1` }}>
                 <Square />
                 <ambientLight />
                 <PerspectiveCamera position={[0, 30, 10]} makeDefault />

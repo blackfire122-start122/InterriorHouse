@@ -186,6 +186,13 @@ func SaveUserScene(c *gin.Context){
 		return 
 	}
 
+	image, err := c.FormFile("image")
+
+	if err != nil {
+		c.Writer.WriteHeader(http.StatusBadRequest)
+		return 
+	}
+
 	err = DB.First(&interior, "id = ? AND interrior_user_id = ?", interiorId, user.Id).Error
 	
 	if err != nil{
@@ -195,8 +202,16 @@ func SaveUserScene(c *gin.Context){
 	}
 
 	interior.File = "media/interiorFiles/"+interiorId+".zip"
+	interior.Image = "media/interiorImages/"+interiorId+".jpg"
 
 	err = c.SaveUploadedFile(file, interior.File)
+
+	if err != nil {
+        c.Writer.WriteHeader(http.StatusInternalServerError)
+		return
+    }
+
+	err = c.SaveUploadedFile(image, interior.Image)
 
 	if err != nil {
         c.Writer.WriteHeader(http.StatusInternalServerError)
