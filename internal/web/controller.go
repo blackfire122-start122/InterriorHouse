@@ -146,6 +146,7 @@ func UserInteriors(c *gin.Context){
 		item["Id"] = strconv.FormatUint(interior.Id,10)
 		item["File"] = interior.File
 		item["Name"] = interior.Name
+		item["Image"] = interior.Image
 		resp[i] = item
 	}
 

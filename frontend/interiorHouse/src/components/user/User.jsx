@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import InteriorList from './InteriorList'
 import CreateInteriorForm from './CreateInteriorForm'
 
+import "./../../static/styles/user/User.css"
+
 const User = function ({client}) {
 	const [interiors,setInteriors] = useState([])
 	const [username,setUsername] = useState([])
@@ -38,7 +40,7 @@ const User = function ({client}) {
 			<br></br>
 			<InteriorList interiors={interiors} />
 	
-			{BtnCreateInteriorShow?<button onClick={createInteriorOnClick}>Create Interior</button>:null}
+			{BtnCreateInteriorShow?<button className="createInteriorBtn" onClick={createInteriorOnClick}>Create Interior</button>:null}
 			{createInteriorShow?<CreateInteriorForm client={client} setCreateInteriorShow={setCreateInteriorShow} setBtnCreateInteriorShow={setBtnCreateInteriorShow} />:null}
 		</div>
 	)

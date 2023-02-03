@@ -1,0 +1,9 @@
+.interiors{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.nameChangeInterior{
+	display:flex;
+	justify-content: space-around;
+}

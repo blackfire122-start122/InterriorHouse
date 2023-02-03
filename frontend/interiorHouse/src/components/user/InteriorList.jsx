@@ -2,6 +2,7 @@ import React from 'react';
 
 import InteriorItem from './InteriorItem'
 
+import "./../../static/styles/user/InteriorList.css"
 
 const InteriorList = function ({interiors}) {
 	return(
