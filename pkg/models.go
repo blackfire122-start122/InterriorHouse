@@ -16,6 +16,13 @@ type User struct {
 	Email string
 }
 
+type Admin struct {
+	gorm.Model
+	Id uint64 `gorm:"primaryKey"`
+	User User `gorm:"foreignKey:UserId"`
+	UserId uint64
+}
+
 type Interior struct {
 	gorm.Model
 	Id uint64 `gorm:"primaryKey"`
@@ -54,5 +61,5 @@ func init() {
 		panic("failed to connect database")
 	}
 
-	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{}, &InteriorStart{})
+	DB.AutoMigrate(&User{}, &Interior{}, &Element{}, &TypeElement{}, &InteriorStart{}, &Admin{})
 }

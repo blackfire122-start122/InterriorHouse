@@ -16,6 +16,8 @@ func SetRouters(router *gin.Engine){
 	router.GET("/api/v1/user/getUser",GetUser)
 	router.GET("/api/v1/user/interiors",UserInteriors)
 
+	// router.GET("/api/v1/admin/",Admin)
+
 	// http.HandleFunc("/ws/chat",ws_chat)
 
 	// http.Handle("/static/",http.StripPrefix("/static/", http.FileServer(http.Dir("../../ui_old_files/static"))))
