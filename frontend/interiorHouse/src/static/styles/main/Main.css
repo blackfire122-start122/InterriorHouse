@@ -1,6 +1,6 @@
 .main-info{
 	height: 50vh;
-	background-image: url('../../static/images/main-info.jpg');
+	background-image: url('../../../static/images/main-info.jpg');
 	background-size: cover;
 	background-position: center;
 

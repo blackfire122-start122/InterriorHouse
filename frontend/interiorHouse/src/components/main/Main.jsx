@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import InteriorList from './InteriorList'
 
-import '../static/styles/Main.css';
+import '../../static/styles/main/Main.css';
 
 
 const Main = function ({client}) {

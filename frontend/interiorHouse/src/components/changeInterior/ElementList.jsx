@@ -4,13 +4,13 @@ import ElementItem from './ElementItem'
 
 import '../../static/styles/changeInterior/elementList.css';
 
-const ElementList = function ({showElements, scene, setcreateObject, elements}) {
+const ElementList = function ({showElements, groupObjects, setcreateObject, elements}) {
 	return(
 		<div style={{display:showElements}} className="mainElements" >
 			<h2>Elements</h2>
 			<div className="elementList">
 				{elements.map(element => 
-					<ElementItem scene={scene} setcreateObject={setcreateObject} element={element} key={element.Id}/>
+					<ElementItem groupObjects={groupObjects} setcreateObject={setcreateObject} element={element} key={element.Id}/>
 				)}
 			</div>
 		</div>

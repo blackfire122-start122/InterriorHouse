@@ -1,5 +1,5 @@
 import React from 'react'
-import '../static/styles/InteriorItem.css'
+import '../../static/styles/main/InteriorItem.css'
 import { Link } from 'react-router-dom';
 
 const Header = function ({interior}) {

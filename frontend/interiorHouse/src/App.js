@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Routes, Route } from 'react-router-dom';
 
-import Main from './components/Main'
+import Main from './components/main/Main'
 import Header from './components/Header'
-import ChangeInterior from './components/ChangeInterior'
+import ChangeInterior from './components/changeInterior/ChangeInterior'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import RightNav from './components/RightNav'
