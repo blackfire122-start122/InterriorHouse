@@ -130,6 +130,8 @@ const ChangeInterior = function ({client}) {
                     console.log("scene created")
                 })
             })
+        }).catch(function (error) {
+            console.log("error load")
         })
     }
 
@@ -253,7 +255,7 @@ const ChangeInterior = function ({client}) {
                 <OrbitControls ref={refOrbitControls} />
             </ Canvas>
 
-            <ElementList showElements={showElements} groupObjects={groupObjects} setcreateObject={setcreateObject} elements={elements} />
+            {/*<ElementList showElements={showElements} groupObjects={groupObjects} setcreateObject={setcreateObject} elements={elements} />*/}
         </div>
 	)
 }

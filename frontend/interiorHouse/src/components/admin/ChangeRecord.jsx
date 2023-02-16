@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 
 import '../../static/styles/admin/changeRecord.css';
 
-const ChangeRecord = function ({client}) {
+const ChangeRecord = function () {
     const state = useLocation().state
     console.log(state)
 	return(

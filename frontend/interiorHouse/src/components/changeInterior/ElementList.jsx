@@ -1,6 +1,8 @@
 import React from 'react';
+import {ErrorBoundary} from 'react-error-boundary'
 
 import ElementItem from './ElementItem'
+import ErrorItem from './ErrorItem'
 
 import '../../static/styles/changeInterior/elementList.css';
 
@@ -10,7 +12,9 @@ const ElementList = function ({showElements, groupObjects, setcreateObject, elem
 			<h2>Elements</h2>
 			<div className="elementList">
 				{elements.map(element => 
-					<ElementItem groupObjects={groupObjects} setcreateObject={setcreateObject} element={element} key={element.Id}/>
+					<ErrorBoundary key={element.Id} fallbackRender={props => <ErrorItem {...props} element={element} />}>
+					    <ElementItem groupObjects={groupObjects} setcreateObject={setcreateObject} element={element} />
+					</ErrorBoundary>
 				)}
 			</div>
 		</div>
