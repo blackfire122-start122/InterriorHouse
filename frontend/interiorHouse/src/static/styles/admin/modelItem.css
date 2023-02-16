@@ -1,0 +1,28 @@
+.ModelItem{
+/*	font-size: 1em;*/
+}
+
+.fields, .tb_row{
+	display: flex;
+}
+
+.field, .tb_col{
+	margin: 1px;
+	width: 10vw;
+	text-align: center;
+}
+
+.tb_col{
+	height: 1em;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tb_col>p{
+	white-space: nowrap;	
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.tb_col>p:active{
+	overflow: visible;
+}

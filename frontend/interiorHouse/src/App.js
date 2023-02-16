@@ -38,7 +38,7 @@ function App() {
                     </Suspense>}>
                 </ Route>
                 <Route path='/user' element={<User client={client} />}></ Route>
-                <Route path='/admin' element={
+                <Route path='/admin/*' element={
                     <Suspense fallback={<div>Loading...</div>}>
                         <Admin client={client} />
                     </Suspense>}>

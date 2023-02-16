@@ -1,0 +1,7 @@
+.field_record{
+	display: flex;
+}
+
+.field_record>h3{
+	width: 50%;
+}

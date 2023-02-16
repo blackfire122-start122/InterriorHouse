@@ -6,7 +6,7 @@ import '../../static/styles/admin/leftDashboard.css';
 const Admin = function () {
 	return(
 		<div className="leftDashboard">
-			<Link className="link" to="/admin/models">Models</Link>
+			<Link className="linkLeftDashboard" to="/admin/models">Models</Link>
         </div>
 	)
 }
