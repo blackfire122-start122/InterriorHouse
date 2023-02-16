@@ -14,9 +14,7 @@ import (
 
 func Elements(c *gin.Context){
 	var elements []Element
-	var err = DB.Preload("Type").Find(&elements).Error
-
-	if err != nil{
+	if err := DB.Preload("Type").Find(&elements).Error; err != nil{
 		fmt.Println("error db")
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -39,9 +37,7 @@ func Elements(c *gin.Context){
 
 func InteriorsStart(c *gin.Context){
 	var interiors []InteriorStart
-	var err = DB.Preload("Interior").Find(&interiors).Error
-	
-	if err != nil{
+	if err := DB.Preload("Interior").Find(&interiors).Error; err != nil{
 		fmt.Println("error db")
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -67,8 +63,7 @@ func RegisterUser(c *gin.Context){
 	var user UserRegister
     bodyBytes, _ := io.ReadAll(c.Request.Body)
 	
-	err := json.Unmarshal(bodyBytes,&user)
-	if err != nil {
+	if err := json.Unmarshal(bodyBytes,&user); err != nil{
 		c.Writer.WriteHeader(http.StatusBadRequest)
     	return
 	}
@@ -87,9 +82,7 @@ func RegisterUser(c *gin.Context){
 		return
 	}
 
-	err = Sign(&user)
-
-	if err != nil {
+	if err := Sign(&user); err != nil{
 		resp["Register"] = "Error create user"
 
 		c.JSON(http.StatusBadRequest, resp)
@@ -106,8 +99,7 @@ func LoginUser(c *gin.Context){
 	var user UserLogin
     bodyBytes, _ := io.ReadAll(c.Request.Body)
 	
-	err := json.Unmarshal(bodyBytes,&user)
-	if err != nil {
+	if err := json.Unmarshal(bodyBytes,&user); err != nil{
     	c.Writer.WriteHeader(http.StatusBadRequest)
     	return
 	}
@@ -131,9 +123,7 @@ func UserInteriors(c *gin.Context){
 		return
 	}
 
-	err := DB.Preload("Interiors").First(&user, "Username = ?", user.Username).Error
-	
-	if err != nil{
+	if err := DB.Preload("Interiors").First(&user, "Username = ?", user.Username).Error; err != nil{
 		fmt.Println("error get user")
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		return 
@@ -194,9 +184,7 @@ func SaveUserScene(c *gin.Context){
 		return 
 	}
 
-	err = DB.First(&interior, "id = ? AND interrior_user_id = ?", interiorId, user.Id).Error
-	
-	if err != nil{
+	if err = DB.First(&interior, "id = ? AND interrior_user_id = ?", interiorId, user.Id).Error; err != nil{
 		fmt.Println("error get interior")
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		return 
@@ -205,23 +193,17 @@ func SaveUserScene(c *gin.Context){
 	interior.File = "media/interiorFiles/"+interiorId+".zip"
 	interior.Image = "media/interiorImages/"+interiorId+".jpg"
 
-	err = c.SaveUploadedFile(file, interior.File)
-
-	if err != nil {
+	if err = c.SaveUploadedFile(file, interior.File); err != nil{
         c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
     }
 
-	err = c.SaveUploadedFile(image, interior.Image)
-
-	if err != nil {
+	if err = c.SaveUploadedFile(image, interior.Image);err != nil{
         c.Writer.WriteHeader(http.StatusInternalServerError)
 		return
     }
 
-    err = DB.Save(&interior).Error
-
-    if err != nil {
+    if err = DB.Save(&interior).Error; err != nil{
 		fmt.Println("error save interior")
 		c.Writer.WriteHeader(http.StatusBadRequest)
     	return 
@@ -241,8 +223,7 @@ func CreateUserInterior(c *gin.Context){
     bodyBytes, _ := io.ReadAll(c.Request.Body)
 	interiorData := make(map[string]string)
 
-	err := json.Unmarshal(bodyBytes,&interiorData)
-	if err != nil {
+	if err := json.Unmarshal(bodyBytes,&interiorData); err != nil{
     	c.Writer.WriteHeader(http.StatusBadRequest)
     	return
 	}
@@ -257,9 +238,7 @@ func CreateUserInterior(c *gin.Context){
 		InterriorUserId:user.Id,
 	}
 
-	err = DB.Create(&interior).Error
-	
-	if err != nil{
+	if err := DB.Create(&interior).Error; err != nil{
 		fmt.Println("error create interior")
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		return 

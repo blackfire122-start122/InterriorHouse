@@ -80,3 +80,12 @@ func CheckSesionUser (r *http.Request) (bool, User){
 	}	
 	return true, user
 }
+
+func CheckAdmin (user User) (bool){
+	var admin Admin
+	if err := DB.Where("user_id=?",user.Id).Find(&admin).Error; err!=nil{
+		return false
+	}
+
+	return admin.UserId==user.Id
+}
