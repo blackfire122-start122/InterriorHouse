@@ -1,15 +1,29 @@
 import React from 'react'
 import '../../static/styles/main/InteriorItem.css'
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Header = function ({interior}) {
+
+const InteriorItem = function ({client,interior}) {
+    const navigate = useNavigate()
+
+	async function createInteriorUserFromStartInterior(e){
+        e.preventDefault()
+        await client.post("/user/createInterior",JSON.stringify({
+            "name":interior.Name
+        }))
+        .then(function (response) {
+            navigate("/ChangeInterior", {replace:true,state: {new:false, newId:response.data["Id"], interior:interior }})
+        })
+    }
+
+
 	return(
-		<Link className="interior" to="/ChangeInterior" state={{ interior: interior }}>
+		<div className="interior" onClick={createInteriorUserFromStartInterior}>
 			{/* full url for nginx*/}
 			<img className="imgInterior" src={"http://localhost/"+interior.Image} alt={interior.Name+" image"}/>
 			<h1 className="interiorName">{interior.Name}</h1>					
-		</Link>
+		</div>
 	)
 }
 
-export default Header;
+export default InteriorItem;

@@ -1,11 +1,51 @@
-.createInteriorBtn{
-	position: fixed;
-	bottom:10%;
-	font-size: 1.7em;
-	border:none;
-	background: green;
-	padding: 5px;
-	border-radius: 8px;
-/*	left: 50%;*/
+.user {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+.user-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.user-header h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.user-header p {
+  font-size: 24px;
+  margin-bottom: 0;
+}
+
+.user-interiors {
+  width: 100%;
+}
+
+.user-interiors h2 {
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+
+.createInteriorBtn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 24px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.createInteriorBtn:hover {
+  background-color: #3e8e41;
 }

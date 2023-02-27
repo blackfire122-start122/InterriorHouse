@@ -39,6 +39,7 @@ const ChangeInterior = function ({client}) {
     const [controlsDrag,setControlsDrag] = useState(0)
 
     const [createObject,setcreateObject] = useState({create:false,object:null})
+    const [loaded,setLoaded] = useState(false)
 
     const refOrbitControls = useRef()
 
@@ -60,6 +61,25 @@ const ChangeInterior = function ({client}) {
         fetchElements()
         // eslint-disable-next-line
     }, [])
+
+
+    const didMount = useRef(false);
+
+    useEffect(() => {
+        if (!didMount.current) {
+            didMount.current = true
+            return
+        } else {
+            if (state){
+                if(state.newId && loaded){
+                    saveScene(scene.toJSON(), state.newId)
+                }else if (state.new){
+                    saveScene(scene.toJSON(), state.interior.Id)
+                }
+            }
+        }
+
+    }, [scene])
 
     async function fetchElements() {
         const response = await client.get("/elements")
@@ -107,7 +127,8 @@ const ChangeInterior = function ({client}) {
                     let LoadScene = new ObjectLoader().parse(JSON.parse(txt))
                     stateCanvas.scene.children = LoadScene.children
                     // ToDo what ??? logic
-                   
+                  
+                    setLoaded(true) 
                     setScene(LoadScene)
                     for (let i = stateCanvas.scene.children.length-1; i>=0; i--){
                         if (stateCanvas.scene.children[i].name === "groupObjects"){
@@ -231,7 +252,11 @@ const ChangeInterior = function ({client}) {
 
     function OnClickBtnSave() {
         if (state){
-            saveScene(scene.toJSON(), state.interior.Id)
+            if(state.newId){
+                saveScene(scene.toJSON(), state.newId)
+            }else{
+                saveScene(scene.toJSON(), state.interior.Id)
+            }
         }
     }
 
@@ -255,7 +280,7 @@ const ChangeInterior = function ({client}) {
                 <OrbitControls ref={refOrbitControls} />
             </ Canvas>
 
-            {/*<ElementList showElements={showElements} groupObjects={groupObjects} setcreateObject={setcreateObject} elements={elements} />*/}
+            <ElementList showElements={showElements} groupObjects={groupObjects} setcreateObject={setcreateObject} elements={elements} />
         </div>
 	)
 }

@@ -1,13 +1,28 @@
-.interior{
-	text-decoration: none;
-	color: white;
-	text-align: center;
-	padding: 2px;
+.interior {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 2px;
+  text-decoration: none;
+  color: inherit;
 }
 
-.interiorName{
+.imgInterior {
+  height: 13em;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
 }
 
-.imgInterior{
-	width:100%;
+.interiorName {
+  font-size: 1.4rem;
+}
+
+@media screen and (max-width: 768px) {
+  .imgInterior {
+    width: 90%;
+    position: relative;
+    right: 0;
+    margin:0 auto;
+    height:auto;
+  }
 }

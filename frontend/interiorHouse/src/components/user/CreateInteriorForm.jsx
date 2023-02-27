@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import "./../../static/styles/user/CreateInteriorForm.css";
+
 const CreateInteriorForm = function ({client, setCreateInteriorShow, setBtnCreateInteriorShow}) {
     const [error, setError] = useState("")
     const navigate = useNavigate()

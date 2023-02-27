@@ -1,0 +1,57 @@
+/* login-dark.css */
+
+.login-wrapper {
+  color: #fff;
+  padding: 1rem;
+}
+
+.login-wrapper h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.login-wrapper form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-wrapper form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.login-wrapper form label p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-wrapper form input {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #fff;
+  color: #333;
+}
+
+.login-wrapper form button {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #fff;
+  color: #333;
+}
+
+.login-wrapper form button:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+.login-wrapper span {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}

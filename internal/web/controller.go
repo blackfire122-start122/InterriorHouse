@@ -111,7 +111,7 @@ func LoginUser(c *gin.Context){
 		fmt.Println("error login")
 
 		resp["Login"] = "error login user"
-		c.JSON(http.StatusOK, resp)
+		c.JSON(http.StatusForbidden, resp)
 	}
 }
 

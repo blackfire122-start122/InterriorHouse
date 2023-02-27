@@ -26,7 +26,7 @@ const Main = function ({client}) {
                 <h1> Lorem ipsum, dolor sit, amet consectetur adipisicing elit.</h1>
             </div>
             <h1 className="">Start with interior</h1>
-            <InteriorList interiors={interiors} />
+            <InteriorList client={client} interiors={interiors} />
         </div>
 	)
 }

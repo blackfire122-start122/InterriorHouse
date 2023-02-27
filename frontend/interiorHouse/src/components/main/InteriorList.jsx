@@ -2,11 +2,11 @@ import React from 'react';
 import InteriorItem from './InteriorItem'
 import '../../static/styles/main/InteriorList.css';
 
-const InteriorList = function ({interiors}) {
+const InteriorList = function ({client,interiors}) {
 	return(
 		<div className="interiorList">
 			{interiors.map(interior => 
-				<InteriorItem interior={interior} key={interior.Id}/>
+				<InteriorItem client={client} interior={interior} key={interior.Id}/>
 			)}
 		</div>
 	)

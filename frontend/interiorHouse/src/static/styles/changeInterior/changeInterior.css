@@ -1,3 +1,19 @@
 .tools{
 	float: right;
 }
+
+.tools button {
+  background-color: black;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.tools button:hover {
+  background-color: white;
+  color: black;
+  transition: all 0.3s ease-in-out;
+}

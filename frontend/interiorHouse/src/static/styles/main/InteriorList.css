@@ -1,4 +1,27 @@
-.interiorList{
-	display: flex;
-	justify-content: space-between;
+.interiorList {
+  display: flex;
+  overflow: auto;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.interiorList::-webkit-scrollbar {
+  height: 8px;
+}
+
+.interiorList::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+.interiorList::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .interiorList {
+    flex-direction: column;
+    align-items: center;
+  }
 }

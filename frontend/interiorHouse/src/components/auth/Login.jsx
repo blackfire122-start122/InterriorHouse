@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import '../../static/styles/auth/login.css';
+
 const Login = function ({client}) {
 	const [username, setUserName] = useState()
 	const [password, setPassword] = useState()
@@ -14,7 +16,6 @@ const Login = function ({client}) {
 			console.log(response.data)
 		})
 		.catch(function (error) {
-			console.log(error)
 			setError(error.response.data["Login"])
 		})
 	}
